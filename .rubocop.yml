@@ -1,0 +1,55 @@
+AllCops:
+  Exclude:
+    - db/schema.rb
+
+Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+TrailingBlankLines:
+  Enabled: false
+
+MethodLength:
+  Max: 24
+
+CaseIndentation:
+  IndentWhenRelativeTo: end
+
+Lint/EndAlignment:
+  AlignWith: variable
+
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Lambda:
+  Enabled: false
+
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+  Exclude:
+    - 'spec/**/*'
+
+CollectionMethods:
+  PreferredMethods:
+    reduce: inject
+    inject: inject
+
+Style/EachWithObject:
+  Enabled: false
+
+Style/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Style/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+Style/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
