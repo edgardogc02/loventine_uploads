@@ -10,37 +10,17 @@ module Users
       end
 
       def save
-        generate_token and @photo.save # && after_callbacks
+        generate_token && @photo.save
       end
 
       private
 
-      def after_callbacks
-        create_completed_section && moderate
-      end
-
-      def create_completed_section
-        if !user.user_completed_sections.completed_section?(section_id)
-          user.user_completed_sections.build(section_id: section_id).save
-          user.update_profile_completeness_percent(Section.find(section_id).percentage)
-        else
-          true
-        end
-      end
-
       def generate_token
-        begin
+        loop do
           photo.token = SecureRandom.urlsafe_base64
-        end while Photo.exists?(token: photo.token)
-        true
-      end
-
-      def moderate
-        begin
-          UserPhotos::ModerateJob.perform_later(photo.id)
-        rescue Redis::CannotConnectError
-          PendingJob.create(worker_class_name: 'UserPhotos::ModerateJob', params: [photo.id])
+          break unless Photo.exists?(token: photo.token)
         end
+        true
       end
     end
   end
