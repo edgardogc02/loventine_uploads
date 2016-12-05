@@ -7,7 +7,7 @@ module Users
       attr_accessor :photo
 
       delegate :image, :state, :user_id, :is_avatar, :user, :x, :y, :w, :h, :remote_image_url,
-               :scale, :angle, to: :photo
+        :scale, :angle, to: :photo
 
       # validations
 
