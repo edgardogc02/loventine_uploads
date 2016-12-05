@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: :create
 
-  before_action :set_user
+  before_action :set_user, :allow_iframe
 
   def index
     @photo = Users::Photos::Form.new(@user.photos.build)
@@ -26,10 +26,8 @@ class PhotosController < ApplicationController
       @photo_form = Users::Photos::Form.new(@user.photos.build)
     end
     if @photo_form.save(photo_params)
-      respond_to do |format|
-        format.html { redirect_to root_path }
-        format.js { render :create }
-      end
+      @redirect = params[:photo][:redirect].sub ':id', @photo_form.photo.id.to_s
+      render :create
     else
       render :new
     end
@@ -43,5 +41,9 @@ class PhotosController < ApplicationController
 
   def set_user
     @user = User.find 270_925
+  end
+
+  def allow_iframe
+    response.headers.except! 'X-Frame-Options'
   end
 end
