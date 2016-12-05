@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: :create
 
-  before_action :set_user, :allow_iframe
+  before_action :allow_iframe, only: :create
 
   def index
     @photo = Users::Photos::Form.new(@user.photos.build)
@@ -23,7 +23,7 @@ class PhotosController < ApplicationController
       io = LoventineStringIO.new(Base64.decode64((params[:photo][:image]).match(%r{^data:(.*?);(.*?),(.*)$})[3]))
       @photo_form = Users::Photos::Form.new(@user.photos.build(image: io))
     else
-      @photo_form = Users::Photos::Form.new(@user.photos.build)
+      @photo_form = Users::Photos::Form.new(Photo.new)
     end
     if @photo_form.save(photo_params)
       @redirect = params[:photo][:redirect].sub ':id', @photo_form.photo.id.to_s
@@ -36,11 +36,8 @@ class PhotosController < ApplicationController
   private
 
   def photo_params
-    params.require(:photo).permit(:is_avatar, :state, :image, :remote_image_url, :x, :y, :w, :h, :angle, :scale)
-  end
-
-  def set_user
-    @user = User.find 270_925
+    params.require(:photo).permit(:is_avatar, :user_id, :state, :image, :remote_image_url,
+      :x, :y, :w, :h, :angle, :scale)
   end
 
   def allow_iframe

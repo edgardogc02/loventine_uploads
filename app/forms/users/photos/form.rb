@@ -46,12 +46,12 @@ module Users
       private
 
       def prepare_to_save(params)
-        photo.attributes = params.slice(:is_avatar, :state, :image, :remote_image_url, :x, :y, :w, :h, :angle, :scale)
+        photo.attributes = params.slice(:is_avatar, :state, :image, :remote_image_url, :x, :y, :w, :h,
+          :angle, :scale, :user_id)
         photo.state = :pending
         # dont let the user upload multiple avatars
-        photo.is_avatar = false if user.avatar && user.avatar != photo
+        photo.is_avatar = false if is_avatar == true && Photo.avatar_for_user(user_id).any?
       end
-
     end
   end
 end
