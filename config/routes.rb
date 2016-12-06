@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  resources :photos
+  resources :photos, only: :create
 
   get 'thumb/:token/:version', to: 'photos#thumb', as: :thumb
-
-  root 'photos#index'
 end

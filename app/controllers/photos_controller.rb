@@ -4,11 +4,6 @@ class PhotosController < ApplicationController
 
   before_action :allow_iframe, only: :create
 
-  def index
-    @photo = Users::Photos::Form.new(@user.photos.build)
-    @photos = @user.photos.where.not(id: nil)
-  end
-
   def thumb
     photo = Photo.find_by_token params[:token]
     filename = Rails.root.join('public', 'uploads', 'photos', photo.token, "#{params[:version]}_image.jpg")
