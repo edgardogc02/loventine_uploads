@@ -1,8 +1,6 @@
 class Photo < ApplicationRecord
   self.table_name = 'user_photos'
 
-  belongs_to :user
-
   mount_uploader :image, PhotoLocalUploader
 
   scope :avatar_for_user, ->(user_id) { where(user_id: user_id).where(is_avatar: true) }
