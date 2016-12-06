@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: :create
 
-  before_action :allow_iframe, only: :create
+  before_action :allow_iframe, :validate_token, only: :create
 
   def thumb
     photo = Photo.find_by_token params[:token]
@@ -31,11 +31,17 @@ class PhotosController < ApplicationController
   private
 
   def photo_params
-    params.require(:photo).permit(:is_avatar, :user_id, :state, :image, :remote_image_url,
-      :x, :y, :w, :h, :angle, :scale)
+    params.require(:photo).permit!
   end
 
   def allow_iframe
     response.headers.except! 'X-Frame-Options'
+  end
+
+  def validate_token
+    unless Users::ApiKeys::Validate.call(params[:photo][:user_id], params[:photo][:token])
+      @redirect = params[:photo][:redirect].sub ':id', '0'
+      render :create, status: 401
+    end
   end
 end
