@@ -9,7 +9,7 @@ class Photo < ApplicationRecord
   enum state: { approved: 1, pending: 2, rejected: 3, deleted: 4, banned: 5 }
 
   def generate_thumb(version: :mini)
-    filename = Rails.root.join('public', 'uploads', 'photos', token, "#{version}_image.jpg")
+    filename = image.send(version).file.file
     source = ::Magick::Image.read(image.path).first
     source = source.resize_to_fill(height(version), width(version), ::Magick::CenterGravity)
     source.write(filename)
