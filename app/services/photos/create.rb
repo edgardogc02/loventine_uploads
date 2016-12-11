@@ -2,7 +2,7 @@ module Photos
   class Create
     attr_accessor :photo
 
-    delegate :user_id, :section_id, to: :photo
+    delegate :user_id, to: :photo
 
     def initialize(photo)
       @photo = photo
