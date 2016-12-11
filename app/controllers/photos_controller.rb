@@ -1,8 +1,4 @@
-class PhotosController < ApplicationController
-
-  skip_before_action :verify_authenticity_token, only: :create
-
-  before_action :allow_iframe, :validate_token, only: :create
+class PhotosController < Uploads::BaseController
 
   def thumb
     photo = Photo.find_by_token params[:token]
@@ -14,14 +10,9 @@ class PhotosController < ApplicationController
   end
 
   def create
-    if params[:photo][:type] == 'webcam'
-      io = LoventineStringIO.new(Base64.decode64((params[:photo][:image]).match(/^data:(.*?);(.*?),(.*)$/)[3]))
-      @photo_form = Users::Photos::FormCreate.new(Photo.new(image: io))
-    else
-      @photo_form = Users::Photos::FormCreate.new(Photo.new)
-    end
-    if @photo_form.save(photo_params)
-      @redirect = params[:photo][:redirect].sub ':id', @photo_form.photo.id.to_s
+    @photo_form = Users::Photos::FormCreate.new(Photo.new)
+    if @photo_form.save(upload_params)
+      @redirect = redirect_url
       if params[:photo][:type] == 'jquery_upload'
         render :create
       else
@@ -30,23 +21,6 @@ class PhotosController < ApplicationController
       end
     else
       render :new
-    end
-  end
-
-  private
-
-  def photo_params
-    params.require(:photo).permit!
-  end
-
-  def allow_iframe
-    response.headers.except! 'X-Frame-Options'
-  end
-
-  def validate_token
-    unless Users::ApiKeys::Validate.call(params[:photo][:user_id], params[:photo][:token])
-      @redirect = params[:photo][:redirect].sub ':id', '0'
-      render :create, status: 401
     end
   end
 end
