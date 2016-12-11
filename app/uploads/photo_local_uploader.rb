@@ -20,20 +20,10 @@ class PhotoLocalUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
 
-  version :mini do
-    process create_thumb: [50, 50]
-  end
-
-  version :small do
-    process create_thumb: [100, 100]
-  end
-
-  version :big do
-    process create_thumb: [200, 200]
-  end
-
-  version :medium do
-    process create_thumb: [150, 150]
+  Thumb.underscored_names.map(&:to_sym).each do |thumb|
+    version thumb do
+      process create_thumb: [Thumb[thumb].height, Thumb[thumb].width]
+    end
   end
 
   def process_original_img
@@ -42,7 +32,7 @@ class PhotoLocalUploader < CarrierWave::Uploader::Base
   end
 
   def rotate
-    if model.angle.present? and model.angle > 0
+    if model.angle.present? && model.angle > 0
       manipulate! do |img|
         img.rotate(model.angle)
       end
@@ -63,11 +53,9 @@ class PhotoLocalUploader < CarrierWave::Uploader::Base
         y = model.y.to_i
         w = model.w.to_i
         h = model.h.to_i
-        # resize_to_limit(550, 550) do |img|
         manipulate! do |img|
           img.crop(x, y, w, h)
         end
-        # end
         resize_to_fill(width, height, Magick::CenterGravity)
       else
         resize_to_fill(width, height, Magick::CenterGravity)
