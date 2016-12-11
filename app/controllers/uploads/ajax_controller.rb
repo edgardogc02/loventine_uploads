@@ -1,6 +1,5 @@
 module Uploads
   class AjaxController < Uploads::BaseController
-
     def create
       @photo_form = Users::Photos::FormCreate.new(Photo.new)
       if @photo_form.save(upload_params)
@@ -9,7 +8,6 @@ module Uploads
       else
         render :new
       end
-
     end
   end
 end

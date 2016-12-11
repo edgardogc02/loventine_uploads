@@ -1,6 +1,5 @@
 module Uploads
   class ClassicController < Uploads::BaseController
-
     def create
       @photo_form = Users::Photos::FormCreate.new(Photo.new)
       if @photo_form.save(upload_params)
@@ -11,6 +10,5 @@ module Uploads
         render :new
       end
     end
-
   end
 end
