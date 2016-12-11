@@ -14,15 +14,20 @@ class PhotosController < ApplicationController
   end
 
   def create
-    if params[:photo][:type] && params[:photo][:type] == 'webcam_data' && params[:photo][:image]
+    if params[:photo][:type] == 'webcam'
       io = LoventineStringIO.new(Base64.decode64((params[:photo][:image]).match(%r{^data:(.*?);(.*?),(.*)$})[3]))
-      @photo_form = Users::Photos::Form.new(@user.photos.build(image: io))
+      @photo_form = Users::Photos::Form.new(Photo.new(image: io))
     else
       @photo_form = Users::Photos::Form.new(Photo.new)
     end
     if @photo_form.save(photo_params)
       @redirect = params[:photo][:redirect].sub ':id', @photo_form.photo.id.to_s
-      render :create
+      if params[:photo][:type] == 'jquery_upload'
+        render :create
+      else
+        response.header['Location'] = @redirect
+        head :see_other # code 303
+      end
     else
       render :new
     end
