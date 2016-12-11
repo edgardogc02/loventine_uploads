@@ -34,6 +34,7 @@ gem 'rmagick'
 # handles upload and file saving
 gem 'carrierwave'
 
+# Adds cors headers (needed for ajax requests)
 gem 'rack-cors', require: 'rack/cors'
 
 group :development, :test do
