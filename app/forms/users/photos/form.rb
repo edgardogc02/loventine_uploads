@@ -34,13 +34,6 @@ module Users
 
       def save(params)
         prepare_to_save(params)
-        if valid?
-          if persisted?
-            Users::Photos::UpdateWithRotation.new(photo).save
-          else
-            Users::Photos::Create.new(photo).save
-          end
-        end
       end
 
       private

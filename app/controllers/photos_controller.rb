@@ -16,9 +16,9 @@ class PhotosController < ApplicationController
   def create
     if params[:photo][:type] == 'webcam'
       io = LoventineStringIO.new(Base64.decode64((params[:photo][:image]).match(%r{^data:(.*?);(.*?),(.*)$})[3]))
-      @photo_form = Users::Photos::Form.new(Photo.new(image: io))
+      @photo_form = Users::Photos::FormCreate.new(Photo.new(image: io))
     else
-      @photo_form = Users::Photos::Form.new(Photo.new)
+      @photo_form = Users::Photos::FormCreate.new(Photo.new)
     end
     if @photo_form.save(photo_params)
       @redirect = params[:photo][:redirect].sub ':id', @photo_form.photo.id.to_s
