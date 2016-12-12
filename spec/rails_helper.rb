@@ -7,9 +7,7 @@ require 'simplecov'
 # spring skips almost all of the lines, so use `bundle exec rspec` to generate new coverage report
 SimpleCov.start :rails do
   add_group 'Services', 'app/services'
-  add_group 'Decorators', 'app/decorators'
   add_group 'Forms', 'app/forms'
-  add_group 'Admin', 'app/admin'
 end
 
 require File.expand_path('../../config/environment', __FILE__)
