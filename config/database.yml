@@ -17,12 +17,3 @@ test:
   password: 12345
   host: localhost
   port: 5432
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: dev_loventine
-  username: edgardo
-  password: 12345
-  host: localhost
-  port: 5432
