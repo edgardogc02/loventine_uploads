@@ -7,4 +7,6 @@ class Photo < ApplicationRecord
 
   # 0 is an unused state
   enum state: { approved: 1, pending: 2, rejected: 3, deleted: 4, banned: 5 }
+
+  belongs_to :user
 end
