@@ -72,9 +72,9 @@ group :test do
   gem 'capybara-screenshot'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'poltergeist'
   gem 'ffaker'
   gem 'guard-rspec'
+  gem 'poltergeist'
   gem 'shoulda-matchers', require: false
   gem 'simplecov', require: false
 end
