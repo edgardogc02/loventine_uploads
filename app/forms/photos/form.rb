@@ -5,7 +5,8 @@ module Photos
 
     attr_accessor :photo
 
-    delegate :image, :state, :user_id, :is_avatar, :x, :y, :w, :h, :remote_image_url, :scale, :angle, to: :photo
+    delegate :image, :image=, :state, :state=, :user_id, :user_id=, :is_avatar, :is_avatar=, :x, :y, :w, :h,
+      :remote_image_url, :scale, :angle, to: :photo
 
     # validations
 
@@ -37,8 +38,7 @@ module Photos
     private
 
     def prepare_to_save(params)
-      photo.attributes = params.slice(:is_avatar, :state, :image, :remote_image_url, :x, :y, :w, :h,
-        :angle, :scale, :user_id)
+      photo.attributes = params.slice(:is_avatar, :image, :remote_image_url, :x, :y, :w, :h, :angle, :scale, :user_id)
       photo.state = :pending
       # dont let the user upload multiple avatars
       photo.is_avatar = false if is_avatar == true && Photo.avatar_for_user(user_id).any?

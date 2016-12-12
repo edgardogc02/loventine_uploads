@@ -8,5 +8,9 @@ FactoryGirl.define do
     after(:build) do |photo|
       photo.token = SecureRandom.urlsafe_base64
     end
+
+    trait :avatar do
+      is_avatar true
+    end
   end
 end
