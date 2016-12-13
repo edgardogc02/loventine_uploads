@@ -77,4 +77,6 @@ group :test do
   gem 'poltergeist'
   gem 'shoulda-matchers', require: false
   gem 'simplecov', require: false
+  # brings back render_template and other functionalities into controller specs
+  gem 'rails-controller-testing'
 end

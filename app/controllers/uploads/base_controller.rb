@@ -18,7 +18,7 @@ module Uploads
     def validate_token
       unless ApiKeys::Validate.call(params[:photo][:user_id], params[:photo][:token])
         @redirect = params[:photo][:redirect].sub ':id', '0'
-        render :create, status: 401
+        render 'uploads/ajax/create', status: :unauthorized
       end
     end
 
