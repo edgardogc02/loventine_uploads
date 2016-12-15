@@ -41,7 +41,12 @@ module Photos
       photo.attributes = params.slice(:is_avatar, :image, :remote_image_url, :x, :y, :w, :h, :angle, :scale, :user_id)
       photo.state = :pending
       # dont let the user upload multiple avatars
-      photo.is_avatar = false if is_avatar == true && Photo.avatar_for_user(user_id).any?
+      photo.is_avatar = false if force_album?
+    end
+
+    # just force album when is a new photo, marked as avatar and another avatar is already there
+    def force_album?
+      photo.new_record? && is_avatar == true && Photo.avatar_for_user(user_id).any?
     end
   end
 end
