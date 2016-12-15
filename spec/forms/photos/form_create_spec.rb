@@ -1,4 +1,4 @@
-describe Photos::FormCreate, type: :form  do
+describe Photos::Form, type: :form  do
   let!(:user) { create(:user) }
   let!(:photo) { Photo.new }
 

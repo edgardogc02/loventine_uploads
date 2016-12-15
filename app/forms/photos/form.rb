@@ -33,6 +33,7 @@ module Photos
 
     def save(params)
       prepare_to_save(params)
+      Photos::Create.new(photo).save if valid?
     end
 
     private
