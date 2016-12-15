@@ -32,7 +32,7 @@ class PhotoLocalUploader < CarrierWave::Uploader::Base
   end
 
   def rotate
-    if model.angle.present? && model.angle > 0
+    if model.angle.present?
       manipulate! do |img|
         img.rotate(model.angle)
       end
