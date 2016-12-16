@@ -26,6 +26,7 @@ class PhotoLocalUploader < CarrierWave::Uploader::Base
     end
   end
 
+
   def process_original_img
     rotate
     resize_to_limit(950, 950)
@@ -39,35 +40,42 @@ class PhotoLocalUploader < CarrierWave::Uploader::Base
     end
   end
 
-  def create_thumb(width, height)
-    begin
-
-      if model.scale.present? && !model.scale.zero?
-        manipulate! do |img|
-          img.scale!(model.scale.to_f)
-        end
-      end
-
-      if model.x.present?
-        x = model.x.to_i
-        y = model.y.to_i
-        w = model.w.to_i
-        h = model.h.to_i
-        manipulate! do |img|
-          img.crop(x, y, w, h)
-        end
-        resize_to_fill(width, height, Magick::CenterGravity)
-      else
-        resize_to_fill(width, height, Magick::CenterGravity)
-      end
-
+  def scale
+    if model.scale.present? && !model.scale.zero?
       manipulate! do |img|
-        img.strip!
+        img.scale!(model.scale.to_f)
       end
-    rescue Exception => e
-      Rails.logger.error(e)
-      ExceptionNotifier.notify_exception(e, data: { model: model.inspect, width: width, height: height })
     end
+  end
+
+  def center_thumb(width, height)
+    if model.x.present?
+      x = model.x.to_i
+      y = model.y.to_i
+      w = model.w.to_i
+      h = model.h.to_i
+      manipulate! do |img|
+        img.crop(x, y, w, h)
+      end
+      resize_to_fill(width, height, Magick::CenterGravity)
+    else
+      resize_to_fill(width, height, Magick::CenterGravity)
+    end
+  end
+
+  def optimize
+    manipulate! do |img|
+      img.strip!
+    end
+  end
+
+  def create_thumb(width, height)
+    scale
+    center_thumb(width, height)
+    optimize
+  rescue StandardError => e
+    Rails.logger.error(e)
+    ExceptionNotifier.notify_exception(e, data: { model: model.inspect, width: width, height: height })
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

@@ -5,5 +5,9 @@ Rails.application.routes.draw do
     post 'classic', to: 'classic#create'
     post 'facebook', to: 'facebook#create'
   end
-  get 'thumb/:token/:version', to: 'thumbs#show'
+
+  resources :photos, only: [:update]
+
+  get 'photo/:token/:hash/image.jpg', to: 'photos#show'
+  get 'thumb/:token/:hash/:version/image.jpg', to: 'thumbs#show'
 end
