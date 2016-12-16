@@ -16,7 +16,7 @@ describe ThumbsController do
     end
 
     it 'returns existing thumb file' do
-      get :show, params: { token: photo.token, version: 'mini' }
+      get :show, params: { token: photo.token, hash: 'some strange hash', version: 'mini' }
       expect(File.exist?(photo.image.send(:mini).path)).to eq true
     end
 
@@ -24,7 +24,7 @@ describe ThumbsController do
       FileUtils.rm(photo.image.send(:mini).path)
       expect(File.exist?(photo.image.send(:mini).path)).not_to eq true
 
-      get :show, params: { token: photo.token, version: 'mini' }
+      get :show, params: { token: photo.token, hash: 'some strange hash', version: 'mini' }
 
       expect(File.exist?(photo.image.send(:mini).path)).to eq true
     end

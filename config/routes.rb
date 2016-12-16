@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :photos, only: [:update]
 
+  # hash is needed for (cleaning) caching purposes
   get 'photo/:token/:hash/image.jpg', to: 'photos#show'
   get 'thumb/:token/:hash/:version/image.jpg', to: 'thumbs#show'
 end
