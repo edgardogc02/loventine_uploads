@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  namespace 'uploads' do
+  namespace 'photos' do
     post 'webcam', to: 'webcam#create'
     post 'ajax', to: 'ajax#create'
     post 'classic', to: 'classic#create'

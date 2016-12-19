@@ -1,4 +1,4 @@
-describe Uploads::ClassicController do
+describe Photos::ClassicController do
   let(:user) { create(:user) }
   let!(:api_key) { create(:api_key, user: user) }
   let(:image) { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'files', 'image.jpg')) }
@@ -12,7 +12,7 @@ describe Uploads::ClassicController do
     it 'fails' do
       redirect = 'http://localhost/photos/:id'
       post :create, params: { photo: { user_id: user.id, token: 'INVALID TOKEN', redirect: redirect, image: image } }
-      expect(response).to render_template 'uploads/ajax/create'
+      expect(response).to render_template 'photos/ajax/create'
       expect(response.status).to eq 401
     end
   end

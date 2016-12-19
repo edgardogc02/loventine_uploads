@@ -1,4 +1,4 @@
-describe Uploads::FacebookController do
+describe Photos::WebcamController do
   let(:user) { create(:user) }
   let!(:api_key) { create(:api_key, user: user) }
   let(:params) {
@@ -7,7 +7,7 @@ describe Uploads::FacebookController do
         user_id: user.id,
         token: api_key.token,
         redirect: 'http://localhost/photos/:id',
-        remote_image_url: 'https://www.blog.loventine.com/wp-content/uploads/2015/02/logo.png'
+        image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAADwCAYAAABxLb1rAAAgAElEQVR4X'
       }
     }
   }

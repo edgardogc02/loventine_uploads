@@ -1,5 +1,5 @@
-module Uploads
-  class WebcamController < Uploads::BaseController
+module Photos
+  class WebcamController < PhotosController
     def create
       io = LoventineStringIO.new(Base64.decode64((params[:photo][:image]).match(/^data:(.*?);(.*?),(.*)$/)[3]))
       @photo_form = Photos::Form.new(Photo.new(image: io))

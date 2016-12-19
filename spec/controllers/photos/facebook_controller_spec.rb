@@ -1,4 +1,4 @@
-describe Uploads::AjaxController do
+describe Photos::FacebookController do
   let(:user) { create(:user) }
   let!(:api_key) { create(:api_key, user: user) }
   let(:params) {
@@ -7,7 +7,7 @@ describe Uploads::AjaxController do
         user_id: user.id,
         token: api_key.token,
         redirect: 'http://localhost/photos/:id',
-        image: Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'files', 'image.jpg'))
+        remote_image_url: 'https://www.blog.loventine.com/wp-content/uploads/2015/02/logo.png'
       }
     }
   }
@@ -17,8 +17,8 @@ describe Uploads::AjaxController do
       expect {
         post :create, params: params
       }.to change { Photo.count }.by 1
-      expect(response).to render_template :create
-      expect(assigns(:redirect)).to eq "http://localhost/photos/#{Photo.last.id}"
+      expect(response.headers['Location']).to eq "http://localhost/photos/#{Photo.last.id}"
+      expect(response.status).to eq 303 # status is 'see other'
     end
 
     it 'fails' do

@@ -1,4 +1,4 @@
-describe Uploads::WebcamController do
+describe Photos::AjaxController do
   let(:user) { create(:user) }
   let!(:api_key) { create(:api_key, user: user) }
   let(:params) {
@@ -7,7 +7,7 @@ describe Uploads::WebcamController do
         user_id: user.id,
         token: api_key.token,
         redirect: 'http://localhost/photos/:id',
-        image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAADwCAYAAABxLb1rAAAgAElEQVR4X'
+        image: Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'files', 'image.jpg'))
       }
     }
   }
@@ -17,8 +17,8 @@ describe Uploads::WebcamController do
       expect {
         post :create, params: params
       }.to change { Photo.count }.by 1
-      expect(response.headers['Location']).to eq "http://localhost/photos/#{Photo.last.id}"
-      expect(response.status).to eq 303 # status is 'see other'
+      expect(response).to render_template :create
+      expect(assigns(:redirect)).to eq "http://localhost/photos/#{Photo.last.id}"
     end
 
     it 'fails' do

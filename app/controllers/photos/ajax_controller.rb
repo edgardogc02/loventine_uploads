@@ -1,5 +1,5 @@
-module Uploads
-  class AjaxController < Uploads::BaseController
+module Photos
+  class AjaxController < PhotosController
     def create
       @photo_form = Photos::Form.new(Photo.new)
       if @photo_form.save(upload_params)
