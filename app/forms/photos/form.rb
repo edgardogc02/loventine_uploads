@@ -3,9 +3,9 @@ module Photos
 
     include ActiveModel::Model
 
-    attr_accessor :photo
+    attr_accessor :photo, :error_redirect_url
 
-    delegate :image, :image=, :state, :state=, :user_id, :user_id=, :is_avatar, :is_avatar=, :x, :y, :w, :h,
+    delegate :id, :image, :image=, :state, :state=, :user_id, :user_id=, :is_avatar, :is_avatar=, :x, :y, :w, :h,
       :remote_image_url, :scale, :angle, to: :photo
 
     # validations
@@ -31,6 +31,10 @@ module Photos
       ActiveModel::Name.new(self, nil, 'Photo')
     end
 
+    def redirect_url
+      persisted? ? success_redirect_url : error_redirect_url
+    end
+
     def save(params)
       prepare_to_save(params)
       Photos::Create.new(photo).save if valid?
@@ -43,6 +47,12 @@ module Photos
       photo.state = :pending
       # dont let the user upload multiple avatars
       photo.is_avatar = false if force_album?
+      @success_redirect_url = params[:success_redirect_url]
+      @error_redirect_url = params[:error_redirect_url]
+    end
+
+    def success_redirect_url
+      @success_redirect_url.sub ':id', id.to_s
     end
 
     # just force album when is a new photo, marked as avatar and another avatar is already there

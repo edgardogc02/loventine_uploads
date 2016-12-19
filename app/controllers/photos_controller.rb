@@ -46,13 +46,8 @@ class PhotosController < ApplicationController
 
   def validate_create_token
     unless ApiKeys::Validate.call(params[:photo][:user_id], params[:photo][:token])
-      @redirect = params[:photo][:redirect].sub ':id', '0'
+      @redirect = params[:photo][:error_redirect_url]
       render 'photos/ajax/create', status: :unauthorized
     end
   end
-
-  def redirect_url
-    params[:photo][:redirect].sub ':id', @photo_form.photo.id.to_s
-  end
-
 end

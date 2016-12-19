@@ -2,12 +2,9 @@ module Photos
   class AjaxController < PhotosController
     def create
       @photo_form = Photos::Form.new(Photo.new)
-      if @photo_form.save(upload_params)
-        @redirect = redirect_url
-        render :create
-      else
-        render :new
-      end
+      @photo_form.save(upload_params)
+      @redirect = @photo_form.redirect_url
+      render :create
     end
   end
 end

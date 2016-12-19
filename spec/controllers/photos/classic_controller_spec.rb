@@ -4,14 +4,30 @@ describe Photos::ClassicController do
   let(:image) { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'files', 'image.jpg')) }
 
   it '#allow_iframe' do
-    post :create, params: { photo: { user_id: user.id, token: api_key.token, redirect: '', image: image } }
+    params = {
+      photo: {
+        user_id: user.id,
+        token: api_key.token,
+        success_redirect_url: 'http://localhost/photos/finish/create/success/:id',
+        image: image
+      }
+    }
+
+    post :create, params: params
     expect(response.headers).not_to include 'X-Frame-Options'
   end
 
   context '#validate_token' do
     it 'fails' do
-      redirect = 'http://localhost/photos/:id'
-      post :create, params: { photo: { user_id: user.id, token: 'INVALID TOKEN', redirect: redirect, image: image } }
+      params = {
+        photo: {
+          user_id: user.id,
+          token: 'INVALID TOKEN',
+          success_redirect_url: 'http://localhost/photos/finish/create/success/:id',
+          image: image
+        }
+      }
+      post :create, params: params
       expect(response).to render_template 'photos/ajax/create'
       expect(response.status).to eq 401
     end
@@ -19,20 +35,38 @@ describe Photos::ClassicController do
 
   context '#create' do
     it 'success' do
-      redirect = 'http://localhost/photos/:id'
+      params = {
+        photo: {
+          user_id: user.id,
+          token: api_key.token,
+          success_redirect_url: 'http://localhost/photos/finish/create/success/:id',
+          image: image
+        }
+      }
+
       expect {
-        post :create, params: { photo: { user_id: user.id, token: api_key.token, redirect: redirect, image: image } }
+        post :create, params: params
       }.to change { Photo.count }.by 1
-      expect(response.headers['Location']).to eq "http://localhost/photos/#{Photo.last.id}"
+      expect(response.headers['Location']).to eq "http://localhost/photos/finish/create/success/#{Photo.last.id}"
       expect(response.status).to eq 303 # status is 'see other'
     end
 
     it 'fails' do
-      pending
+      params = {
+        photo: {
+          user_id: user.id,
+          token: api_key.token,
+          success_redirect_url: 'http://localhost/photos/finish/create/success/:id',
+          error_redirect_url: 'http://localhost/photos/finish/create/error',
+          image: nil
+        }
+      }
+
       expect {
-        post :create, params: { photo: { user_id: user.id, token: api_key.token, redirect: '', image: nil } }
+        post :create, params: params
       }.not_to change { Photo.count }
-      expect(response).to render_template :new
+      expect(response.headers['Location']).to eq 'http://localhost/photos/finish/create/error'
+      expect(response.status).to eq 303 # status is 'see other'
     end
   end
 end
