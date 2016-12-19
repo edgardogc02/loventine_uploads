@@ -11,6 +11,16 @@ describe PhotosController do
     end
   end
 
+  context '#validate_user_and_photo' do
+    let!(:photo) { create(:photo) }
+
+    it 'fails' do
+      patch :update, params: { id: photo.id, format: :json, photo: { user_id: user.id, token: api_key.token } }
+      expect(response.body).to be_blank
+      expect(response.status).to eq 401
+    end
+  end
+
   context '#update' do
     it 'success' do
       expect {
