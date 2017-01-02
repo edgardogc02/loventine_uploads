@@ -1,0 +1,38 @@
+upstream unicorn {
+  server unix:/tmp/unicorn.<%= fetch(:nginx_name) %>.sock fail_timeout=0;
+}
+
+server {
+  listen 443 ssl http2;
+
+  server_name uploads.test.loventine.com;
+  root <%= current_path %>/public;
+
+  ssl_certificate /etc/nginx/ssl/uploads/uploads_test.crt;
+  ssl_certificate_key /etc/nginx/ssl/uploads/uploads_test.key;
+
+  # side note: only use TLS since SSLv2 and SSLv3 have had recent vulnerabilities
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  # Or if you are using Nginx add this to your server config:
+
+  try_files $uri/index.html $uri @unicorn;
+  location @unicorn {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_redirect off;
+    proxy_pass http://unicorn;
+  }
+
+  error_page 500 502 503 504 /500.html;
+  client_max_body_size 5M;
+  keepalive_timeout 65;
+
+}

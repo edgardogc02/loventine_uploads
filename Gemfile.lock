@@ -67,6 +67,8 @@ GEM
     capistrano-rails (1.2.1)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    capistrano-template (0.0.7)
+      capistrano (~> 3.0)
     capybara (2.11.0)
       addressable
       mime-types (>= 1.16)
@@ -353,6 +355,7 @@ DEPENDENCIES
   byebug
   capistrano
   capistrano-rails
+  capistrano-template
   capybara
   capybara-screenshot
   carrierwave

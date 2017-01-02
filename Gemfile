@@ -68,6 +68,7 @@ group :development do
 
   gem 'capistrano'
   gem 'capistrano-rails'
+  gem 'capistrano-template'
 end
 
 group :test do
