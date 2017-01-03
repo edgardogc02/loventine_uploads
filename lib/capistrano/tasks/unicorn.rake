@@ -16,7 +16,7 @@ namespace :unicorn do
     desc "#{command} unicorn"
     task command do
       on roles(:app) do
-        execute "service unicorn_#{fetch(:unicorn_name)} #{command}"
+        execute "sudo service unicorn_#{fetch(:unicorn_name)} #{command}"
       end
     end
   end

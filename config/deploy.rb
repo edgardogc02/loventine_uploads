@@ -1,6 +1,10 @@
 # config valid only for current version of Capistrano
 lock '3.7.1'
 
+set :user, 'deployer'
+set :deploy_via, :remote_cache # just perform a pull when deploying.
+set :use_sudo, false
+
 set :application, 'uploads'
 set :repo_url, "88.198.48.241:/repositories/#{fetch(:application)}.git"
 set :branch, 'master'
