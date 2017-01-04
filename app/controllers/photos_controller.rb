@@ -6,6 +6,10 @@ class PhotosController < ApplicationController
 
   before_action :allow_iframe, :validate_create_token, only: :create
 
+  def index
+    @photos = Photo.last(2)
+  end
+
   def update
     photo = Photo.find(params[:id])
     photo.image.recreate_versions!
