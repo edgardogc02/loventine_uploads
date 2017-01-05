@@ -47,6 +47,13 @@ gem 'degu'
 # Used for env vars
 gem 'figaro'
 
+# background jobs
+gem 'sidekiq'
+gem 'sidekiq-failures'
+
+# retry background jobs
+gem 'activejob-retriable'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -76,6 +83,7 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-template'
+  gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
 end
 
 group :test do

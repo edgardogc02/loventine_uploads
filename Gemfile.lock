@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/seuros/capistrano-sidekiq.git
+  revision: 339c42e24f42d8d72173daae832b23504930f941
+  specs:
+    capistrano-sidekiq (0.10.0)
+      capistrano
+      sidekiq (>= 3.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -27,6 +35,8 @@ GEM
     activejob (5.0.0.1)
       activesupport (= 5.0.0.1)
       globalid (>= 0.3.6)
+    activejob-retriable (5.0.4)
+      activejob (~> 5.0)
     activemodel (5.0.0.1)
       activesupport (= 5.0.0.1)
     activerecord (5.0.0.1)
@@ -99,6 +109,7 @@ GEM
       execjs
     coffee-script-source (1.11.1)
     concurrent-ruby (1.0.2)
+    connection_pool (2.2.1)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
     degu (0.9.0)
@@ -220,6 +231,8 @@ GEM
     public_suffix (2.0.4)
     rack (2.0.1)
     rack-cors (0.4.0)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.0.1)
@@ -255,6 +268,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    redis (3.3.2)
     reek (4.5.3)
       codeclimate-engine-rb (~> 0.4.0)
       parser (~> 2.3.1, >= 2.3.1.2)
@@ -314,6 +328,13 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
+    sidekiq (4.2.7)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (~> 3.2, >= 3.2.1)
+    sidekiq-failures (0.4.5)
+      sidekiq (>= 2.16.0)
     simplecov (0.12.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -369,11 +390,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activejob-retriable
   brakeman
   bundler-audit
   byebug
   capistrano
   capistrano-rails
+  capistrano-sidekiq!
   capistrano-template
   capybara
   capybara-screenshot
@@ -403,6 +426,8 @@ DEPENDENCIES
   sandi_meter
   sass-rails (~> 5.0)
   shoulda-matchers
+  sidekiq
+  sidekiq-failures
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)

@@ -13,4 +13,7 @@ Rails.application.routes.draw do
   get 'thumb/:token/:hash/:version/image.jpg', to: 'thumbs#show'
 
   match 'photos/copy_from_remote/:id', to: 'photos#copy_from_remote', via: [:put, :patch]
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiqo'
 end

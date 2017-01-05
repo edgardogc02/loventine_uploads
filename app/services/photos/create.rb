@@ -23,7 +23,8 @@ module Photos
     end
 
     def backup
-      Photos::Backup.call(photo)
+      Photos::BackupJob.perform_later(photo.id)
+      true
     end
   end
 end
