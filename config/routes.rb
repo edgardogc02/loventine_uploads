@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     post 'facebook', to: 'facebook#create'
   end
 
-  resources :photos, only: [:update, :destroy]
+  resources :photos, only: [:update]
 
   # hash is needed for (cleaning) caching purposes
   get 'photo/:token/:hash/image.jpg', to: 'photos#show'
