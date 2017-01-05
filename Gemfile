@@ -31,14 +31,21 @@ gem 'jbuilder', '~> 2.5'
 
 # image manipulation
 gem 'rmagick'
+
 # handles upload and file saving
 gem 'carrierwave'
+
+# used to save images on aws
+gem 'fog-aws'
 
 # Adds cors headers (needed for ajax requests)
 gem 'rack-cors', require: 'rack/cors'
 
 # Use for enum. See thumb class
 gem 'degu'
+
+# Used for env vars
+gem 'figaro'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

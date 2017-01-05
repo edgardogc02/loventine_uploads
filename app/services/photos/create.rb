@@ -9,7 +9,7 @@ module Photos
     end
 
     def save
-      generate_token && @photo.save
+      generate_token && @photo.save && backup
     end
 
     private
@@ -20,6 +20,10 @@ module Photos
         break unless Photo.exists?(token: photo.token)
       end
       true
+    end
+
+    def backup
+      Photos::Backup.call(photo)
     end
   end
 end
