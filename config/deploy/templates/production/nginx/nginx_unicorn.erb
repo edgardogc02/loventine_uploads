@@ -1,0 +1,62 @@
+upstream unicorn {
+  server unix:/tmp/unicorn.<%= fetch(:nginx_name) %>.sock fail_timeout=0;
+}
+
+server {
+    listen 80;
+    server_name uploads.loventine.com;
+    location / {
+        return 301 https://uploads.loventine.com$request_uri;
+    }
+}
+
+server {
+  listen 443 ssl http2;
+
+  server_name uploads.loventine.com;
+  root <%= current_path %>/public;
+
+  ssl_certificate /etc/nginx/ssl/uploads/production.crt;
+  ssl_certificate_key /etc/nginx/ssl/uploads/production.key;
+
+  # side note: only use TLS since SSLv2 and SSLv3 have had recent vulnerabilities
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location /sidekiqo {
+    auth_basic "Login";
+    auth_basic_user_file <%= fetch(:sidekiq_password_location) %>;
+    try_files $uri @unicorn;
+  }
+
+  # serve photos and thumbs first from nginx and if not found invoke rails
+  location ~* /photo/(.*)/(.*)/(.*) {
+    try_files /uploads/photos/$1/$3 /uploads/photos/$1/image.png /uploads/photos/$1/image.jpeg /uploads/photos/$1/image.bmp /uploads/photos/$1/image.gif @unicorn_uploads;
+    break;
+  }
+
+  location ~* /thumb/(.*)/(.*)/(.*)/(.*) {
+    try_files /uploads/photos/$1/$3_$4 /uploads/photos/$1/$3_image.png /uploads/photos/$1/$3_image.jpeg /uploads/photos/$1/$3_image.bmp /uploads/photos/$1/$3_image.gif @unicorn_uploads;
+    break;
+  }
+
+  # Or if you are using Nginx add this to your server config:
+
+  try_files $uri/index.html $uri @unicorn;
+  location @unicorn {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_redirect off;
+    proxy_pass http://unicorn;
+  }
+
+  error_page 500 502 503 504 /500.html;
+  client_max_body_size 5M;
+  keepalive_timeout 65;
+}

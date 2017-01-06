@@ -7,7 +7,7 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-
+server '88.99.69.71', user: 'deployer', roles: %w(web app db)
 
 # role-based syntax
 # ==================
@@ -17,11 +17,9 @@
 # property set. Specify the username and a domain or IP for the server.
 # Don't use `:all`, it's a meta role.
 
-# role :app, %w{deploy@example.com}, my_property: :my_value
-# role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
-# role :db,  %w{deploy@example.com}
-
-
+role :web, '88.99.69.71'
+role :app, '88.99.69.71'
+role :db, '88.99.69.71'
 
 # Configuration
 # =============
@@ -31,7 +29,24 @@
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
+# Vars
+set :deploy_to, "/var/www/html/#{fetch(:application)}"
 
+set :sidekiq_user, fetch(:user)
+set :sidekiq_pid, "#{current_path}/tmp/pids/sidekiq.pid"
+set :sidekiq_role, :app
+set :sidekiq_service_name, "sidekiq_#{fetch(:application)}"
+
+set :unicorn_user, fetch(:user)
+set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
+set :unicorn_config, "#{shared_path}/config/unicorn.rb"
+set :unicorn_log, "#{shared_path}/log/unicorn.log"
+set :unicorn_workers, 2
+set :unicorn_name, fetch(:application)
+
+set :nginx_name, fetch(:application)
+
+set :sidekiq_password_location, "#{shared_path}/.sidekiq_htpasswd"
 
 # Custom SSH Options
 # ==================
