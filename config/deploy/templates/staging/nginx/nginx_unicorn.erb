@@ -54,4 +54,8 @@ server {
   client_max_body_size 5M;
   keepalive_timeout 65;
 
+  location /sidekiqo {
+    auth_basic "Login";
+    auth_basic_user_file #{shared_path}/.sidekiq_htpasswd;
+  }
 }
