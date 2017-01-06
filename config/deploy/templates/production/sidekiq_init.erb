@@ -63,7 +63,7 @@ stop() {
 }
 
 status() {
-  ps -ef | grep "sidekiq [0-9].[0-9].[0-9] $APP" | grep 'of 5 busy' | grep -v grep
+  ps -ef | grep "sidekiq [0-9].[0-9].[0-9] $APP" | grep 'of 15 busy' | grep -v grep
   return $?
 }
 
