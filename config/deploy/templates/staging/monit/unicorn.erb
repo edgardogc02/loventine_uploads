@@ -1,6 +1,6 @@
 check process <%= fetch(:application) %>_unicorn_staging with pidfile <%= fetch(:unicorn_pid) %>
-  start program = "/etc/init.d/unicorn_<%= fetch(:application) %> start"
-  stop program = "/etc/init.d/unicorn_<%= fetch(:application) %> stop"
+  start program = "/etc/init.d/unicorn_<%= fetch(:application) %>_staging start"
+  stop program = "/etc/init.d/unicorn_<%= fetch(:application) %>_staging stop"
 
 <% fetch(:unicorn_workers).to_i.times do |n| %>
   <% pid = fetch(:unicorn_pid).sub(".pid", ".#{n}.pid") %>
