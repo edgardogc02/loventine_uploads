@@ -47,6 +47,8 @@ set :unicorn_name, "#{fetch(:application)}_staging"
 
 set :nginx_name, "#{fetch(:application)}_staging"
 
+set :sidekiq_password_location, "#{shared_path}/.sidekiq_htpasswd"
+
 # Custom SSH Options
 # ==================
 # You may pass any option but keep in mind that net/ssh understands a
