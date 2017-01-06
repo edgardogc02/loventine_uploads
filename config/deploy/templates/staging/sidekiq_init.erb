@@ -21,7 +21,7 @@ LOCK_FILE="$APP_DIR/log/${APP}-lock"
 PID_FILE="<%= fetch(:sidekiq_pid) %>"
 GEMFILE="$APP_DIR/Gemfile"
 SIDEKIQ="sidekiq"
-APP_ENV="production"
+APP_ENV="staging"
 BUNDLE="bundle"
 
 START_CMD="$BUNDLE exec $SIDEKIQ -C $CONFIG_FILE -e $APP_ENV -P $PID_FILE"
