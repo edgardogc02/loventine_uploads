@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/seuros/capistrano-sidekiq.git
+  revision: 339c42e24f42d8d72173daae832b23504930f941
+  specs:
+    capistrano-sidekiq (0.10.0)
+      capistrano
+      sidekiq (>= 3.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -27,6 +35,8 @@ GEM
     activejob (5.0.0.1)
       activesupport (= 5.0.0.1)
       globalid (>= 0.3.6)
+    activejob-retriable (5.0.4)
+      activejob (~> 5.0)
     activemodel (5.0.0.1)
       activesupport (= 5.0.0.1)
     activerecord (5.0.0.1)
@@ -99,6 +109,7 @@ GEM
       execjs
     coffee-script-source (1.11.1)
     concurrent-ruby (1.0.2)
+    connection_pool (2.2.1)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
     degu (0.9.0)
@@ -108,6 +119,7 @@ GEM
     docile (1.1.5)
     equalizer (0.0.11)
     erubis (2.7.0)
+    excon (0.54.0)
     execjs (2.7.0)
     factory_girl (4.7.0)
       activesupport (>= 3.0.0)
@@ -116,6 +128,8 @@ GEM
       railties (>= 3.0.0)
     ffaker (2.3.0)
     ffi (1.9.14)
+    figaro (1.1.1)
+      thor (~> 0.14)
     flay (2.8.1)
       erubis (~> 2.7.0)
       path_expander (~> 1.0)
@@ -125,6 +139,21 @@ GEM
       path_expander (~> 1.0)
       ruby_parser (~> 3.1, > 3.1.0)
       sexp_processor (~> 4.4)
+    fog-aws (0.12.0)
+      fog-core (~> 1.38)
+      fog-json (~> 1.0)
+      fog-xml (~> 0.1)
+      ipaddress (~> 0.8)
+    fog-core (1.43.0)
+      builder
+      excon (~> 0.49)
+      formatador (~> 0.2)
+    fog-json (1.0.2)
+      fog-core (~> 1.0)
+      multi_json (~> 1.10)
+    fog-xml (0.1.2)
+      fog-core
+      nokogiri (~> 1.5, >= 1.5.11)
     formatador (0.2.5)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
@@ -144,6 +173,7 @@ GEM
       rspec (>= 2.99.0, < 4.0)
     i18n (0.7.0)
     ice_nine (0.11.2)
+    ipaddress (0.8.3)
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -201,6 +231,8 @@ GEM
     public_suffix (2.0.4)
     rack (2.0.1)
     rack-cors (0.4.0)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.0.1)
@@ -236,6 +268,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    redis (3.3.2)
     reek (4.5.3)
       codeclimate-engine-rb (~> 0.4.0)
       parser (~> 2.3.1, >= 2.3.1.2)
@@ -295,6 +328,13 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
+    sidekiq (4.2.7)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (~> 3.2, >= 3.2.1)
+    sidekiq-failures (0.4.5)
+      sidekiq (>= 2.16.0)
     simplecov (0.12.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -350,11 +390,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activejob-retriable
   brakeman
   bundler-audit
   byebug
   capistrano
   capistrano-rails
+  capistrano-sidekiq!
   capistrano-template
   capybara
   capybara-screenshot
@@ -364,6 +406,8 @@ DEPENDENCIES
   degu
   factory_girl_rails
   ffaker
+  figaro
+  fog-aws
   guard-rspec
   jbuilder (~> 2.5)
   listen (~> 3.0.5)
@@ -382,6 +426,8 @@ DEPENDENCIES
   sandi_meter
   sass-rails (~> 5.0)
   shoulda-matchers
+  sidekiq
+  sidekiq-failures
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)

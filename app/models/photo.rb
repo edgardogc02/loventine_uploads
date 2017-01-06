@@ -2,6 +2,7 @@ class Photo < ApplicationRecord
   self.table_name = 'user_photos'
 
   mount_uploader :image, PhotoLocalUploader
+  mount_uploader :image_bck, UserPhotoAmazonS3Uploader
 
   scope :avatar_for_user, ->(user_id) { where(user_id: user_id).where(is_avatar: true) }
 

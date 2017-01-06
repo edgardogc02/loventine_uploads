@@ -16,5 +16,7 @@ describe Photos::Create do
 
     expect(photo).to be_persisted
     expect(photo.token).not_to be_empty
+
+    expect(Photos::BackupJob).to have_been_enqueued.with(photo.id)
   end
 end

@@ -1,8 +1,8 @@
 class PhotosController < ApplicationController
 
-  skip_before_action :verify_authenticity_token, only: [:create, :update, :copy_from_remote, :destroy]
+  skip_before_action :verify_authenticity_token, only: [:create, :update, :copy_from_remote]
 
-  before_action :validate_update_token, :validate_user_and_photo, only: [:update, :copy_from_remote, :destroy]
+  before_action :validate_update_token, :validate_user_and_photo, only: [:update, :copy_from_remote]
 
   before_action :allow_iframe, :validate_create_token, only: :create
 
@@ -18,6 +18,7 @@ class PhotosController < ApplicationController
 
   def show
     photo = Photo.find_by_token params[:token]
+    return head :not_found unless photo
     filename = photo.image.path
     send_file filename, type: 'image/jpeg', disposition: 'inline'
   end
@@ -28,17 +29,6 @@ class PhotosController < ApplicationController
       photo.remote_image_url = params[:photo][:remote_image_url]
       photo.save
     end
-    respond_to do |format|
-      format.json do
-        head :ok
-      end
-    end
-  end
-
-  def destroy
-    photo = Photo.find params[:id]
-
-    Photos::Destroy.call(photo)
     respond_to do |format|
       format.json do
         head :ok

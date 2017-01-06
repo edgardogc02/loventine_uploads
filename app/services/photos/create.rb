@@ -9,7 +9,7 @@ module Photos
     end
 
     def save
-      generate_token && @photo.save
+      generate_token && @photo.save && backup
     end
 
     private
@@ -19,6 +19,11 @@ module Photos
         photo.token = SecureRandom.urlsafe_base64
         break unless Photo.exists?(token: photo.token)
       end
+      true
+    end
+
+    def backup
+      Photos::BackupJob.perform_later(photo.id)
       true
     end
   end

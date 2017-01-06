@@ -31,6 +31,7 @@ set :ssh_options, forward_agent: true
 custom_linked_files = %w(
   config/database.yml
   config/secrets.yml
+  config/application.yml
 )
 set :linked_files, fetch(:linked_files, []) + custom_linked_files
 

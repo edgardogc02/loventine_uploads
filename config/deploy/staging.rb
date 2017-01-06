@@ -33,6 +33,11 @@ role :db, '88.99.69.71'
 # Vars
 set :deploy_to, "/var/www/html/#{fetch(:application)}_staging"
 
+set :sidekiq_user, fetch(:user)
+set :sidekiq_pid, "#{current_path}/tmp/pids/sidekiq.pid"
+set :sidekiq_role, :app
+set :sidekiq_service_name, "sidekiq_#{fetch(:application)}_staging"
+
 set :unicorn_user, fetch(:user)
 set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
 set :unicorn_config, "#{shared_path}/config/unicorn.rb"
@@ -41,6 +46,8 @@ set :unicorn_workers, 2
 set :unicorn_name, "#{fetch(:application)}_staging"
 
 set :nginx_name, "#{fetch(:application)}_staging"
+
+set :sidekiq_password_location, "#{shared_path}/.sidekiq_htpasswd"
 
 # Custom SSH Options
 # ==================
