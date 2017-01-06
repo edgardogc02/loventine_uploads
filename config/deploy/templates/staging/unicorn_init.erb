@@ -42,7 +42,7 @@ start)
   run "$CMD"
   ;;
 stop)
-  sig QUIT && exit 0
+  sig QUIT && sleep 0.5 && exit 0
   echo >&2 "Not running"
   ;;
 force-stop)
