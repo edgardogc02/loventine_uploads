@@ -7,7 +7,7 @@ set :use_sudo, false
 
 set :application, 'uploads'
 set :repo_url, "88.198.48.241:/repositories/#{fetch(:application)}.git"
-set :branch, 'develop'
+set :branch, 'master'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
