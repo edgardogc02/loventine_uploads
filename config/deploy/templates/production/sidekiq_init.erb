@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 # You will need to modify these
-APP="<%= fetch(:application) %>_staging"
+APP="<%= fetch(:application) %>"
 AS_USER="<%= fetch(:sidekiq_user) %>"
 APP_DIR="<%= current_path %>"
 
@@ -21,7 +21,7 @@ LOCK_FILE="$APP_DIR/log/${APP}-lock"
 PID_FILE="<%= fetch(:sidekiq_pid) %>"
 GEMFILE="$APP_DIR/Gemfile"
 SIDEKIQ="sidekiq"
-APP_ENV="staging"
+APP_ENV="production"
 BUNDLE="bundle"
 
 START_CMD="$BUNDLE exec $SIDEKIQ -C $CONFIG_FILE -e $APP_ENV -P $PID_FILE"
@@ -63,7 +63,7 @@ stop() {
 }
 
 status() {
-  ps -ef | grep "sidekiq [0-9].[0-9].[0-9] $APP" | grep 'of 5 busy' | grep -v grep
+  ps -ef | grep "sidekiq [0-9].[0-9].[0-9] $APP" | grep 'of 15 busy' | grep -v grep
   return $?
 }
 

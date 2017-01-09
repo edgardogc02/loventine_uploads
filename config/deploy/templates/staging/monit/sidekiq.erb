@@ -1,0 +1,4 @@
+check process sidekiq_staging with pidfile <%= fetch(:sidekiq_pid) %>
+  depends on redis
+  start program = "/etc/init.d/sidekiq_<%= fetch(:application) %>_staging start"
+  stop program = "/etc/init.d/sidekiq_<%= fetch(:application) %>_staging stop"

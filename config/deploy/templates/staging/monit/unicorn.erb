@@ -1,0 +1,15 @@
+check process <%= fetch(:application) %>_unicorn_staging with pidfile <%= fetch(:unicorn_pid) %>
+  start program = "/etc/init.d/unicorn_<%= fetch(:application) %>_staging start"
+  stop program = "/etc/init.d/unicorn_<%= fetch(:application) %>_staging stop"
+
+<% fetch(:unicorn_workers).to_i.times do |n| %>
+  <% pid = fetch(:unicorn_pid).sub(".pid", ".#{n}.pid") %>
+  check process <%= fetch(:application) %>_unicorn_worker_staging_<%= n %> with pidfile <%= pid %>
+    start program = "/bin/true"
+    stop program = "/usr/bin/test -s <%= pid %> && /bin/kill -QUIT `cat <%= pid %>`"
+    if mem > 2000.0 MB for 1 cycles then restart
+    if cpu > 70% for 3 cycles then restart
+    if 5 restarts within 5 cycles then timeout
+    alert edgardo@loventine.com only on { pid }
+    if changed pid 2 times within 60 cycles then alert
+<% end %>
