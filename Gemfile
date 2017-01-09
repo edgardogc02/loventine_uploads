@@ -54,6 +54,9 @@ gem 'sidekiq-failures'
 # retry background jobs
 gem 'activejob-retriable'
 
+# logs and email exceptions
+gem 'exception_notification'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
