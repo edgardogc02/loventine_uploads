@@ -4,6 +4,10 @@ class Photo < ApplicationRecord
   mount_uploader :image, PhotoLocalUploader
   mount_uploader :image_bck, UserPhotoAmazonS3Uploader
 
+  # scopes
+
+  default_scope -> { where(deleted_at: nil) }
+
   scope :avatar_for_user, ->(user_id) { where(user_id: user_id).where(is_avatar: true) }
 
   # 0 is an unused state
