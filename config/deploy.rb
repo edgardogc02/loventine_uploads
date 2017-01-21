@@ -43,7 +43,6 @@ custom_linked_dirs = %w(
   tmp/sockets
   public/system
   public/uploads
-  public/success_story
 )
 set :linked_dirs, fetch(:linked_dirs, []) + custom_linked_dirs
 
