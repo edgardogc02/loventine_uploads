@@ -28,23 +28,39 @@ class PhotoLocalUploader < CarrierWave::Uploader::Base
 
 
   def process_original_img
+    exif_rotation
+    optimize_original_img
     rotate
     resize_to_limit(950, 950)
   end
 
+  def optimize_original_img
+    return if model.x.present?
+    manipulate! do |img|
+      img.strip!
+    end
+  end
+
+  # Rotates or flips the image based on the image's EXIF orientation tag
+  # auto_orient! does not work because if no exif is contains this method returns nil.
+  def exif_rotation
+    return if model.angle.present?
+    manipulate! do |img|
+      img.auto_orient
+    end
+  end
+
   def rotate
-    if model.angle.present?
-      manipulate! do |img|
-        img.rotate(model.angle)
-      end
+    return unless model.angle.present?
+    manipulate! do |img|
+      img.rotate(model.angle)
     end
   end
 
   def scale
-    if model.scale.present? && !model.scale.zero?
-      manipulate! do |img|
-        img.scale!(model.scale.to_f)
-      end
+    return unless model.scale.present? && !model.scale.zero?
+    manipulate! do |img|
+      img.scale!(model.scale.to_f)
     end
   end
 
@@ -57,10 +73,8 @@ class PhotoLocalUploader < CarrierWave::Uploader::Base
       manipulate! do |img|
         img.crop(x, y, w, h)
       end
-      resize_to_fill(width, height, Magick::CenterGravity)
-    else
-      resize_to_fill(width, height, Magick::CenterGravity)
     end
+    resize_to_fill(width, height, Magick::CenterGravity)
   end
 
   def optimize
