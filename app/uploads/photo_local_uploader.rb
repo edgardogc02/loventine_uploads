@@ -26,12 +26,20 @@ class PhotoLocalUploader < CarrierWave::Uploader::Base
     end
   end
 
-
   def process_original_img
     exif_rotation
+    save_geometry
     optimize_original_img
     rotate
     resize_to_limit(950, 950)
+  end
+
+  def save_geometry
+    return if model.width.present?
+    return unless file && model
+    img = ::Magick::Image.ping(file.file).first
+    model.width = img.columns
+    model.height = img.rows
   end
 
   def optimize_original_img
