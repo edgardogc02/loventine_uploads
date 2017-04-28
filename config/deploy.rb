@@ -60,7 +60,7 @@ set :keep_releases, 5
 
 before 'deploy:starting', 'check:revision'
 
-after 'deploy:publishing', 'unicorn:restart'
+after 'deploy:publishing', 'unicorn:reload'
 
 namespace :deploy do
   after :restart, :clear_cache do

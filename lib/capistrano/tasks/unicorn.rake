@@ -12,7 +12,8 @@ namespace :unicorn do
   end
   # after :setup, 'unicorn:setup'
 
-  %w(start stop restart).each do |command|
+  # unicorn restart does not work in ubuntu 16
+  %w(start stop reload).each do |command|
     desc "#{command} unicorn"
     task command do
       on roles(:app) do
