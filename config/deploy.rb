@@ -6,7 +6,7 @@ set :deploy_via, :remote_cache # just perform a pull when deploying.
 set :use_sudo, false
 
 set :application, 'uploads'
-set :repo_url, "88.198.48.241:/repositories/#{fetch(:application)}.git"
+set :repo_url, 'git@gitlab.com:loventine/uploads.git'
 set :branch, 'master'
 
 # Default branch is :master
