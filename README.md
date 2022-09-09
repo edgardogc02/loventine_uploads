@@ -15,7 +15,7 @@ This was the service in charge of uploading and displaying photos for Loventine 
 * Photos must maintain great quality and be as light as possible 
 * Photos must have thumbnails in different sizes
 * Photos have different states. Initial state is *pending*. Only *approved* photos are displayed to all users.
-* Admin users are able to *approve* photos. (This happens in another service).
+* Admin users are able change photo states. (This happens in another service).
 * User can see all his uploaded photos, independent of the photo state.
 * User should be able to center and crop the original photo as much as he/she wants. This should also regenerate the thumbnails if they already exist
 * Uploads must be fast and safe
