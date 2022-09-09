@@ -19,4 +19,4 @@ This was the service in charge of uploading and displaying photos for Loventine 
 * User can see all his uploaded photos, independent of the photo state.
 * User should be able to center and crop the original photo as much as he/she wants. This should also regenerate the thumbnails if they already exist
 * Uploads must be fast and safe
-** This is why the photo is uploaded first to the server and then in a background process is saved to s3. (Uploading directly to s3 was way slower).
+  * This is why the photo is uploaded first to the server and then in a background process is saved to s3. (Uploading directly to s3 was way slower).
