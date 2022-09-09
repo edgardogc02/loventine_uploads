@@ -1,14 +1,14 @@
 # README
 
-This was the service in charge of uploading and displaying photos for Loventine (https://www.loventine.com). Loventine is now discontinued.
+This was the service in charge of uploading and displaying photos for Loventine (https://www.loventine.com). **Loventine was a deting website and now is discontinued.**
 
-For uploading pictures there were many posibilities:
+#### For uploading pictures there were many posibilities:
 * Classic upload (with site reload)
 * Upload using Ajax
 * Importing images from Facebook
 * Taking picture with webcam
 
-Requirements: 
+#### Requirements: 
 * Users can have only one avatar
 * Users can have many album photos
 * Photos must only be in jpeg, png or bmp format
