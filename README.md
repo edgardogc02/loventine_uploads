@@ -5,7 +5,7 @@ This was the service in charge of uploading and displaying photos for Loventine 
 For uploading pictures there were many posibilities:
 * Classic upload (with site reload)
 * Upload using Ajax
-* Importing from Facebook
+* Importing images from Facebook
 * Taking picture with webcam
 
 Requirements: 
