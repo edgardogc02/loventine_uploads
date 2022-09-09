@@ -1,6 +1,6 @@
 # README
 
-This was the service in charge of uploading and displaying photos for Loventine (https://www.loventine.com). 
+This was the service in charge of uploading and displaying photos for Loventine (https://www.loventine.com). Loventine is now discontinued.
 For uploading pictures there were many posibilities:
 * Classic upload (with site reload)
 * Upload using Ajax
